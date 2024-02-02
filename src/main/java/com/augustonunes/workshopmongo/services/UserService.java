@@ -1,6 +1,7 @@
 package com.augustonunes.workshopmongo.services;
 
 import com.augustonunes.workshopmongo.domain.User;
+import com.augustonunes.workshopmongo.dto.UserDTO;
 import com.augustonunes.workshopmongo.repositories.UserRepository;
 import com.augustonunes.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,13 @@ public class UserService {
             throw new ObjectNotFoundException("Object not found");
         }
         return userOpt.get();
+    }
+
+    public User insert(User obj){
+        return userRepository.insert(obj);
+    }
+
+    public User fromDTO(UserDTO objDto){
+        return new User(objDto.getId(), objDto.getName(), objDto.getEmail());
     }
 }

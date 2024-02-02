@@ -22,10 +22,7 @@ public class UserService {
 
     public User findById(String id) {
         Optional<User> userOpt = userRepository.findById(id);
-        if (userOpt.isEmpty()) {
-            throw new ObjectNotFoundException("Object not found");
-        }
-        return userOpt.get();
+        return userOpt.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
     }
 
     public User insert(User obj) {
@@ -38,12 +35,9 @@ public class UserService {
     }
 
     public User update(User obj) {
-        Optional<User> objOpt = userRepository.findById(obj.getId());
-        if (objOpt.isEmpty()) {
-            throw new ObjectNotFoundException("Object not found");
-        }
-        updateData(objOpt.get(), obj);
-        return userRepository.save(objOpt.get());
+        User newObj = findById(obj.getId());
+        updateData(newObj, obj);
+        return userRepository.save(newObj);
     }
 
     private void updateData(User newObj, User obj) {
